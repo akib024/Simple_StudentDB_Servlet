@@ -227,7 +227,11 @@ public class StudentDbUtil {
             System.out.println("<-- theSearchName : "+theSearchName+" -->");
             if (theSearchName != null && theSearchName.trim().length() > 0) {
             	// create sql to search for students by name
-                String sql = "select * from student where lower(first_name) like ? or lower(last_name) like ?";
+                String sql = "select * from student "
+                		+ "where "
+                		+ "lower(first_name) like ? "
+                		+ "or lower(last_name) like ? "
+                		+ "or lower(email) like ?";
                 
                 // create prepared statement
                 myStmt = myConn.prepareStatement(sql);
@@ -236,6 +240,7 @@ public class StudentDbUtil {
                 String theSearchNameLike = "%" + theSearchName.trim().toLowerCase() + "%";
                 myStmt.setString(1, theSearchNameLike);
                 myStmt.setString(2, theSearchNameLike);
+                myStmt.setString(3, theSearchNameLike);
                 System.out.println("<-- myStmt : "+myStmt.toString()+" -->");
             } else {
                 // create sql to get all students
@@ -245,8 +250,6 @@ public class StudentDbUtil {
                 System.out.println("<-- myStmt : "+myStmt.toString()+" -->");
             }
             
-            /*String select = "select";
-            myStmt = myStmt.su*/
             // execute statement
             myRs = myStmt.executeQuery();
             

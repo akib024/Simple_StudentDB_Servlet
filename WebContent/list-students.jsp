@@ -33,7 +33,8 @@
         
                 <input type="hidden" name="command" value="SEARCH" />
             
-                Search student: <input type="text" name="theSearchName" />
+                Search student: <input type="text" name="theSearchName" 
+                placeholder="First name/Last name/Email"/>
                 
                 <input type="submit" value="Search" class="add-student-button" />
             
