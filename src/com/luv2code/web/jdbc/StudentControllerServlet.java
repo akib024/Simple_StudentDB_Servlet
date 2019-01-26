@@ -1,6 +1,7 @@
 package com.luv2code.web.jdbc;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -121,15 +122,15 @@ public class StudentControllerServlet extends HttpServlet {
 
 
 
-	private void searchStudents(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void searchStudents(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 		// read search name from form data
 		String theSearchName = request.getParameter("theSearchName");
 		
 		// search students from db util
-		//List<Student> students = studentDbUtil.searchStudents(theSearchName);
+		List<Student> students = studentDbUtil.searchStudents(theSearchName);
 		
 		// add students to the request
-		//request.setAttribute("STUDENT_LIST", students);
+		request.setAttribute("STUDENT_LIST", students);
 		
 		// send to JSP page (view)
 		RequestDispatcher dispatcher  = request.getRequestDispatcher("/list-students.jsp");

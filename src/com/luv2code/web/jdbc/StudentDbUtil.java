@@ -224,6 +224,7 @@ public class StudentDbUtil {
             //
             // only search by name if theSearchName is not empty
             //
+            System.out.println("<-- theSearchName : "+theSearchName+" -->");
             if (theSearchName != null && theSearchName.trim().length() > 0) {
             	// create sql to search for students by name
                 String sql = "select * from student where lower(first_name) like ? or lower(last_name) like ?";
@@ -232,15 +233,48 @@ public class StudentDbUtil {
                 myStmt = myConn.prepareStatement(sql);
                 
                 // set params
-                String theSearchNameLike = "%" + theSearchName.toLowerCase() + "%";
+                String theSearchNameLike = "%" + theSearchName.trim().toLowerCase() + "%";
                 myStmt.setString(1, theSearchNameLike);
                 myStmt.setString(2, theSearchNameLike);
+                System.out.println("<-- myStmt : "+myStmt.toString()+" -->");
+            } else {
+                // create sql to get all students
+                String sql = "select * from student order by last_name";
+                // create prepared statement
+                myStmt = myConn.prepareStatement(sql);
+                System.out.println("<-- myStmt : "+myStmt.toString()+" -->");
             }
-        }finally {
+            
+            /*String select = "select";
+            myStmt = myStmt.su*/
+            // execute statement
+            myRs = myStmt.executeQuery();
+            
+            // retrieve data from result set row
+            while (myRs.next()) {
+            	 // retrieve data from result set row
+                int id = myRs.getInt("id");
+                System.out.println("<-- id : "+id+" -->");
+                String firstName = myRs.getString("first_name");
+                System.out.println("<-- firstName : "+firstName+" -->");
+                String lastName = myRs.getString("last_name");
+                System.out.println("<-- lastName : "+lastName+" -->");
+                String email = myRs.getString("email");
+                System.out.println("<-- email : "+email+" -->");
+                
+                // create new student object
+                Student tempStudent = new Student(id, firstName, lastName, email);
+                
+                // add it to the list of students
+                students.add(tempStudent);     
+            }
+            
+            return students;
+            
+        } finally {
             // clean up JDBC objects
             close(myConn, myStmt, myRs);
         }
-		return null;
 	}
 
 }
